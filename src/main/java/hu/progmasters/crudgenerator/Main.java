@@ -13,33 +13,33 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
         if (args.length != 1) {
-            System.out.println("Usage: java -jar crudgenerator.jar [DomainName]");
+            System.out.println("Usage: java -jar crudgenerator-1.0.jar [DomainName]");
             System.exit(1);
         }
 
-        String domainPackage = determinePackage();
-        if (domainPackage.length() == 0) {
+        String packageName = determinePackage();
+        if (packageName.length() == 0) {
             System.out.println("Can't determine package name. Please change the current directory to the MainApp.java");
             System.exit(2);
         }
 
-        String domain = toUpCase(args[0]);
-        String variable = toLoCase(domain);
+        String domainName = toUpCase(args[0]);
+        String variableName = toLoCase(domainName);
 
         List<Template> templates = new ArrayList<>(List.of(
-                new Template("Controller", "controller", domain + "Controller"),
-                new Template("Domain", "domain", domain),
-                new Template("Command", "dto", domain + "Command"),
-                new Template("Info", "dto", domain + "Info"),
-                new Template("Service", "service", domain + "Service"),
-                new Template("Repository", "repository", domain + "Repository")
+                new Template("Controller", "controller", domainName + "Controller"),
+                new Template("Domain", "domain", domainName),
+                new Template("Command", "dto", domainName + "Command"),
+                new Template("Info", "dto", domainName + "Info"),
+                new Template("Service", "service", domainName + "Service"),
+                new Template("Repository", "repository", domainName + "Repository")
         ));
 
         try {
             for (Template template : templates) {
 
                 if (!Path.of(template.getResultPath()).toFile().exists()) {
-                    Files.createDirectory(Path.of(template.getResultPath()));
+                    Files.createDirectories(Path.of(template.getResultPath()));
                 }
 
                 InputStream contentStream = Main.class.getResourceAsStream(
@@ -49,9 +49,9 @@ public class Main {
                     String content = new Scanner(contentStream, StandardCharsets.UTF_8)
                             .useDelimiter("\\A")
                             .next()
-                            .replace("{PACKAGE}", domainPackage)
-                            .replace("{DOMAIN}", domain)
-                            .replace("{VARIABLE}", variable);
+                            .replace("{PACKAGE}", packageName)
+                            .replace("{DOMAIN}", domainName)
+                            .replace("{VARIABLE}", variableName);
 
                     Files.writeString(
                             Path.of(template.getResultPath(), template.getResultFileName() + ".java"),
@@ -60,19 +60,20 @@ public class Main {
             }
         } catch (IOException e) {
             System.out.println(e.getMessage());
-            System.exit(2);
+            System.exit(3);
         }
+        System.out.println("CRUD for "+domainName + " successfully generated!");
     }
 
     private static String determinePackage() {
         String result = "";
 
-        String root = "src.main.java.".replace('.', File.separatorChar);
-        String wd = System.getProperty("user.dir");
+        String packageRoot = "src.main.java.".replace('.', File.separatorChar);
+        String workDir = System.getProperty("user.dir");
 
-        int pos = wd.indexOf(root);
+        int pos = workDir.indexOf(packageRoot);
         if (pos >= 0) {
-            result = wd.substring(pos + root.length()).replace(File.separatorChar, '.');
+            result = workDir.substring(pos + packageRoot.length()).replace(File.separatorChar, '.');
         }
 
         return result;
