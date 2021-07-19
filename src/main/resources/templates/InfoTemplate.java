@@ -12,5 +12,5 @@ public class {DOMAIN}Info {
     private Long id;
 
     @Schema(description = "Name of this {VARIABLE}", example = "Name")
-    private String title;
+    private String name;
 }

@@ -42,13 +42,14 @@ public class {DOMAIN}Controller {
             )
     )
     @GetMapping
-    public ResponseEntity<List<{DOMAIN}Info>> findAll() {
+    @ResponseStatus(HttpStatus.OK)
+    public List<{DOMAIN}Info> findAll() {
         log.info("HTTP GET /api/{VARIABLE}s - List all {VARIABLE}s");
 
-        List<{DOMAIN}Info> {VARIABLE} = {VARIABLE}Service.findAll();
-        log.info(String.format(POSITIVE_RESPONSE, {VARIABLE}));
+        List<{DOMAIN}Info> {VARIABLE}s = {VARIABLE}Service.findAll();
+        log.info(String.format(POSITIVE_RESPONSE, {VARIABLE}s));
 
-        return new ResponseEntity<>({VARIABLE}, HttpStatus.OK);
+        return {VARIABLE}s;
     }
 
 
@@ -66,13 +67,14 @@ public class {DOMAIN}Controller {
             description = "{DOMAIN} not found by the given id."
     )
     @GetMapping("/{id}")
-    public ResponseEntity<{DOMAIN}Info> findById(@PathVariable("id") Long id) {
+    @ResponseStatus(HttpStatus.OK)
+    public {DOMAIN}Info findById(@PathVariable("id") Long id) {
         log.info(String.format("HTTP GET /api/{VARIABLE}s/%s - Query this {VARIABLE}", id));
 
         {DOMAIN}Info {VARIABLE} = {VARIABLE}Service.findById(id);
         log.info(String.format(POSITIVE_RESPONSE, {VARIABLE}));
 
-        return new ResponseEntity<>({VARIABLE}, HttpStatus.OK);
+        return {VARIABLE};
     }
 
 
@@ -89,14 +91,15 @@ public class {DOMAIN}Controller {
             responseCode = "400",
             description = "Bad request on validation error."
     )
-    @PostMapping()
-    public ResponseEntity<{DOMAIN}Info> save(@Valid @RequestBody {DOMAIN}Command command) {
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public {DOMAIN}Info save(@Valid @RequestBody {DOMAIN}Command command) {
         log.info(String.format("HTTP POST /api/{variable}s - Create a new {VARIABLE} with these data: %s", command));
 
         {DOMAIN}Info {VARIABLE} = {VARIABLE}Service.save(command);
         log.info(String.format("HTTP Response: CREATED, Body: %s", {VARIABLE}));
 
-        return new ResponseEntity<>({VARIABLE}, HttpStatus.CREATED);
+        return {VARIABLE};
     }
 
 
@@ -114,7 +117,8 @@ public class {DOMAIN}Controller {
             description = "Bad request on validation error."
     )
     @PutMapping("/{id}")
-    public ResponseEntity<{DOMAIN}Info> update(
+    @ResponseStatus(HttpStatus.OK)
+    public {DOMAIN}Info update(
             @PathVariable Long id,
             @Valid @RequestBody {DOMAIN}Command command) {
         log.info(String.format("HTTP PUT /api/{VARIABLE}s/%s - Modify an existing {VARIABLE} with these data: %s", id, command));
@@ -122,7 +126,7 @@ public class {DOMAIN}Controller {
         {DOMAIN}Info {VARIABLE} = {VARIABLE}Service.update(id, command);
         log.info(String.format(POSITIVE_RESPONSE, {VARIABLE}));
 
-        return new ResponseEntity<>({VARIABLE}, HttpStatus.OK);
+        return {VARIABLE};
     }
 
     @Operation(summary = "Delete an existing {VARIABLE}")
@@ -135,12 +139,11 @@ public class {DOMAIN}Controller {
             description = "Bad request on nonexistent {VARIABLE}."
     )
     @DeleteMapping("/{id}")
-    public ResponseEntity<{DOMAIN}Info> delete(@PathVariable Long id) {
+    @ResponseStatus(HttpStatus.OK)
+    public void delete(@PathVariable Long id) {
         log.info(String.format("HTTP DELETE /api/{VARIABLE}s/%s - Delete an existing {VARIABLE}", id));
 
         {VARIABLE}Service.delete(id);
         log.info("HTTP Response: OK, {DOMAIN} successfully deleted.");
-
-        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
