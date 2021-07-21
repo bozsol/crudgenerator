@@ -12,9 +12,9 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -24,12 +24,12 @@ import java.util.List;
 @Tag(name = "Operations on {VARIABLE}s")
 public class {DOMAIN}Controller {
 
-    private static final String POSITIVE_RESPONSE = "HTTP Response: OK, Body: %s";
-
     private final {DOMAIN}Service {VARIABLE}Service;
+    private final HttpServletRequest request;
 
-    public {DOMAIN}Controller({DOMAIN}Service {VARIABLE}Service) {
+    public {DOMAIN}Controller({DOMAIN}Service {VARIABLE}Service, HttpServletRequest request) {
         this.{VARIABLE}Service = {VARIABLE}Service;
+        this.request = request;
     }
 
     @Operation(summary = "Query all stored {VARIABLE}s")
@@ -44,11 +44,11 @@ public class {DOMAIN}Controller {
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public List<{DOMAIN}Info> findAll() {
-        log.info("HTTP GET /api/{VARIABLE}s - List all {VARIABLE}s");
+        logRequest();
 
         List<{DOMAIN}Info> {VARIABLE}s = {VARIABLE}Service.findAll();
-        log.info(String.format(POSITIVE_RESPONSE, {VARIABLE}s));
 
+        logResponse(HttpStatus.OK, {VARIABLE}s);
         return {VARIABLE}s;
     }
 
@@ -69,11 +69,11 @@ public class {DOMAIN}Controller {
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public {DOMAIN}Info findById(@PathVariable("id") Long id) {
-        log.info(String.format("HTTP GET /api/{VARIABLE}s/%s - Query this {VARIABLE}", id));
+        logRequest();
 
         {DOMAIN}Info {VARIABLE} = {VARIABLE}Service.findById(id);
-        log.info(String.format(POSITIVE_RESPONSE, {VARIABLE}));
 
+        logResponse(HttpStatus.OK, {VARIABLE});
         return {VARIABLE};
     }
 
@@ -94,11 +94,11 @@ public class {DOMAIN}Controller {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public {DOMAIN}Info save(@Valid @RequestBody {DOMAIN}Command command) {
-        log.info(String.format("HTTP POST /api/{variable}s - Create a new {VARIABLE} with these data: %s", command));
+        logRequest(command);
 
         {DOMAIN}Info {VARIABLE} = {VARIABLE}Service.save(command);
-        log.info(String.format("HTTP Response: CREATED, Body: %s", {VARIABLE}));
 
+        logResponse(HttpStatus.CREATED, {VARIABLE});
         return {VARIABLE};
     }
 
@@ -121,11 +121,11 @@ public class {DOMAIN}Controller {
     public {DOMAIN}Info update(
             @PathVariable Long id,
             @Valid @RequestBody {DOMAIN}Command command) {
-        log.info(String.format("HTTP PUT /api/{VARIABLE}s/%s - Modify an existing {VARIABLE} with these data: %s", id, command));
+        logRequest(command);
 
         {DOMAIN}Info {VARIABLE} = {VARIABLE}Service.update(id, command);
-        log.info(String.format(POSITIVE_RESPONSE, {VARIABLE}));
 
+        logResponse(HttpStatus.OK, {VARIABLE});
         return {VARIABLE};
     }
 
@@ -141,9 +141,33 @@ public class {DOMAIN}Controller {
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public void delete(@PathVariable Long id) {
-        log.info(String.format("HTTP DELETE /api/{VARIABLE}s/%s - Delete an existing {VARIABLE}", id));
+        logRequest();
 
         {VARIABLE}Service.delete(id);
-        log.info("HTTP Response: OK, {DOMAIN} successfully deleted.");
+
+        logResponse(HttpStatus.OK, null);
+    }
+
+
+    private void logRequest() {
+        logRequest(null);
+    }
+
+    private void logRequest(Object body) {
+        logRequest(List.of(body));
+    }
+
+    private void logRequest(List<Object> body) {
+        log.info(request.getMethod() + " " + request.getRequestURI() +
+        (request.getQueryString() != null ? "?" + request.getQueryString() : "") +
+        (body != null ? "; Body: " + body : ""));
+    }
+
+    private static void logResponse(HttpStatus status, Object message) {
+        if (message == null) {
+            log.info(String.format("HTTP Response: %s %s", status.value(), status.getReasonPhrase()));
+        } else {
+            log.info(String.format("HTTP Response: %s %s; Body: %s", status.value(), status.getReasonPhrase(), message));
+        }
     }
 }

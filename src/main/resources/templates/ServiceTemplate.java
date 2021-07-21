@@ -24,9 +24,7 @@ public class {DOMAIN}Service {
     }
 
     public List<{DOMAIN}Info> findAll() {
-        return {VARIABLE}Repository.findAll().stream()
-                .map({VARIABLE} -> modelMapper.map({VARIABLE}, {DOMAIN}Info.class))
-                .collect(Collectors.toList());
+        return {VARIABLE}Repository.findAll().stream().map(this::mapTo{DOMAIN}Info).collect(Collectors.toList());
     }
 
     public {DOMAIN}Info findById(Long id) {
