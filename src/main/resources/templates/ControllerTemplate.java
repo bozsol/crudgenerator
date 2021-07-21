@@ -154,20 +154,14 @@ public class {DOMAIN}Controller {
     }
 
     private void logRequest(Object body) {
-        logRequest(List.of(body));
-    }
-
-    private void logRequest(List<Object> body) {
         log.info(request.getMethod() + " " + request.getRequestURI() +
         (request.getQueryString() != null ? "?" + request.getQueryString() : "") +
         (body != null ? "; Body: " + body : ""));
     }
 
-    private static void logResponse(HttpStatus status, Object message) {
-        if (message == null) {
-            log.info(String.format("HTTP Response: %s %s", status.value(), status.getReasonPhrase()));
-        } else {
-            log.info(String.format("HTTP Response: %s %s; Body: %s", status.value(), status.getReasonPhrase(), message));
-        }
+    private static void logResponse(HttpStatus status, Object body) {
+        String responseFormat = "HTTP Response: %s %s";
+        responseFormat += (message != null ? "; Body: %s" : "");
+        log.info(String.format(responseFormat, status.value(), status.getReasonPhrase(), body));
     }
 }
