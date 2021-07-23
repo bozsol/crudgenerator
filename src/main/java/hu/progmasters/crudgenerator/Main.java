@@ -13,7 +13,7 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
         if (args.length != 1) {
-            System.out.println("Usage: java -jar crudgenerator-1.0.jar [DomainName]");
+            System.out.println("Usage: java -jar crudgenerator-1.4.jar [DomainName]");
             System.exit(1);
         }
 
