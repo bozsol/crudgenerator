@@ -59,7 +59,7 @@ public class {DOMAIN}Controller {
             description = "Return the specified {VARIABLE} by id.",
             content = @Content(
                     mediaType = MediaType.APPLICATION_JSON_VALUE,
-                    array = @ArraySchema(schema = @Schema(implementation = {DOMAIN}Info.class))
+                    schema = @Schema(implementation = {DOMAIN}Info.class)
             )
     )
     @ApiResponse(
@@ -84,7 +84,7 @@ public class {DOMAIN}Controller {
             description = "Return the newly created {VARIABLE}.",
             content = @Content(
                     mediaType = MediaType.APPLICATION_JSON_VALUE,
-                    array = @ArraySchema(schema = @Schema(implementation = {DOMAIN}Info.class))
+                    schema = @Schema(implementation = {DOMAIN}Info.class)
             )
     )
     @ApiResponse(
@@ -109,7 +109,7 @@ public class {DOMAIN}Controller {
             description = "Return the modified {VARIABLE}.",
             content = @Content(
                     mediaType = MediaType.APPLICATION_JSON_VALUE,
-                    array = @ArraySchema(schema = @Schema(implementation = {DOMAIN}Info.class))
+                    schema = @Schema(implementation = {DOMAIN}Info.class)
             )
     )
     @ApiResponse(
@@ -161,7 +161,7 @@ public class {DOMAIN}Controller {
 
     private static void logResponse(HttpStatus status, Object body) {
         String responseFormat = "HTTP Response: %s %s";
-        responseFormat += (message != null ? "; Body: %s" : "");
+        responseFormat += (body != null ? "; Body: %s" : "");
         log.info(String.format(responseFormat, status.value(), status.getReasonPhrase(), body));
     }
 }
