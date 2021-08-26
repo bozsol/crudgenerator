@@ -13,7 +13,7 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
         if (args.length != 1) {
-            System.out.println("Usage: java -jar crudgenerator-1.4.jar [DomainName]");
+            System.out.println("Usage: java -jar crudgenerator-1.5.jar [DomainName]");
             System.exit(1);
         }
 
@@ -32,7 +32,12 @@ public class Main {
                 new Template("Command", "dto", domainName + "Command"),
                 new Template("Info", "dto", domainName + "Info"),
                 new Template("Service", "service", domainName + "Service"),
-                new Template("Repository", "repository", domainName + "Repository")
+                new Template("Repository", "repository", domainName + "Repository"),
+                new Template("GlobalExceptionHandler", "exception", "GlobalExceptionHandler"),
+                new Template("NotFoundException", "exception", "NotFoundException"),
+                new Template("ValidateError", "dto", "ValidateError"),
+                new Template("GeneralLogger", "log", "GeneralLogger"),
+                new Template("Beans", "config", "Beans")
         ));
 
         try {

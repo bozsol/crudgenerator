@@ -3,6 +3,7 @@ package {PACKAGE}.service;
 import {PACKAGE}.domain.{DOMAIN};
 import {PACKAGE}.dto.{DOMAIN}Command;
 import {PACKAGE}.dto.{DOMAIN}Info;
+import {PACKAGE}.exception.NotFoundException;
 import {PACKAGE}.repository.{DOMAIN}Repository;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -60,7 +61,7 @@ public class {DOMAIN}Service {
         return modelMapper.map(command, {DOMAIN}.class);
     }
 
-    private IllegalArgumentException getNotFoundException() {
-        return new IllegalArgumentException();
+    private NotFoundException getNotFoundException() {
+        return new NotFoundException().addNotFound("{VARIABLE}", "{DOMAIN} not found!");
     }
 }
