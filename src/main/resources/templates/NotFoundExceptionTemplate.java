@@ -11,9 +11,7 @@ public class NotFoundException extends RuntimeException {
     private final List<ValidateError> errorMessages = new ArrayList<>();
 
     public NotFoundException addNotFound(String field, String message) {
-        errorMessages.add(new ValidateError()
-                        .setField(field)
-                        .setErrorMessage(message));
+        errorMessages.add(new ValidateError(field, message));
         return this;
     }
 }

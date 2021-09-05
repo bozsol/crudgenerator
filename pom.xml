@@ -6,7 +6,7 @@
 
     <groupId>hu.progmasters</groupId>
     <artifactId>crudgenerator</artifactId>
-    <version>1.5</version>
+    <version>1.6</version>
 
     <dependencies>
         <dependency>

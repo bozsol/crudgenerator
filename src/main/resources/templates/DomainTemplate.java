@@ -8,7 +8,7 @@ import javax.persistence.*;
 @Data
 @NoArgsConstructor
 @Entity
-@Table(name = "{VARIABLE}s")
+@Table(name = "{PL_VARIABLE}")
 public class {DOMAIN} {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

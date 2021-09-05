@@ -14,7 +14,7 @@ import static {PACKAGE}.log.GeneralLogger.logResponse;
 
 
 @RestController
-@RequestMapping("/api/{VARIABLE}s")
+@RequestMapping("/api/{PL_VARIABLE}")
 public class {DOMAIN}Controller {
 
     private final {DOMAIN}Service {VARIABLE}Service;
@@ -28,10 +28,10 @@ public class {DOMAIN}Controller {
     public List<{DOMAIN}Info> findAll() {
         logRequest();
 
-        List<{DOMAIN}Info> {VARIABLE}s = {VARIABLE}Service.findAll();
+        List<{DOMAIN}Info> {PL_VARIABLE} = {VARIABLE}Service.findAll();
 
-        logResponse(HttpStatus.OK, {VARIABLE}s);
-        return {VARIABLE}s;
+        logResponse(HttpStatus.OK, {PL_VARIABLE});
+        return {PL_VARIABLE};
     }
 
 

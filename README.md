@@ -11,13 +11,13 @@ Just simply write:
 ```
 
 ## Usage
-1. Copy the target/crudgenerator-1.5.jar file into the root folder
+1. Copy the target/crudgenerator-1.6.jar file into the root folder
    of your package, where the @SpringBootApplication MainApp.java 
    file can be found (src/main/java/group/id/artifact).
 2. Open the terminal and change to the previous directory.   
 3. Start the generator with the following command:
    ```
-   > java -jar crudgenerator-1.5.jar Rabbit
+   > java -jar crudgenerator-1.6.jar Rabbit
    ```
    where the `Rabbit` is the name of the domain class
 4. Insert the fields into the domain, dto/command and dto/info classes
